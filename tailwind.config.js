@@ -44,8 +44,16 @@ export default {
         'slide-in-right': 'slideInRight 0.7s ease-out forwards',
         'float': 'float 6s ease-in-out infinite',
         'float-delayed': 'float 6s ease-in-out 2s infinite',
+        'float-delayed-2': 'float 6s ease-in-out 1s infinite',
         'pulse-slow': 'pulseSlow 4s ease-in-out infinite',
         'gradient': 'gradient 8s ease infinite',
+        'marquee': 'marquee 30s linear infinite',
+        'bounce-in': 'bounceIn 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards',
+        'shimmer': 'shimmer 3s ease-in-out infinite',
+        'glow-pulse': 'glowPulse 4s ease-in-out infinite',
+        'spin-slow': 'spin 12s linear infinite',
+        'scale-in': 'scaleIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards',
+        'slide-up': 'slideUp 0.6s ease-out forwards',
       },
       keyframes: {
         fadeIn: {
@@ -79,6 +87,32 @@ export default {
         gradient: {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        bounceIn: {
+          '0%': { opacity: '0', transform: 'scale(0.6)' },
+          '60%': { opacity: '1', transform: 'scale(1.05)' },
+          '80%': { transform: 'scale(0.97)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% center' },
+          '100%': { backgroundPosition: '200% center' },
+        },
+        glowPulse: {
+          '0%, 100%': { opacity: '0.2', transform: 'scale(1)' },
+          '50%': { opacity: '0.5', transform: 'scale(1.08)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.85)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
     },

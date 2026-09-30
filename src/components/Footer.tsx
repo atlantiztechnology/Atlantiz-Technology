@@ -25,16 +25,25 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-sm font-bold text-white">
-                B
-              </span>
-              <span className="font-display text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                {siteConfig.name}
-              </span>
+            <div className="flex items-center gap-3">
+              <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white p-1 shadow-md shadow-brand-600/10 ring-1 ring-gray-200/80 dark:bg-gray-900 dark:ring-gray-800">
+                <img
+                  src="/logo.png"
+                  alt="Atlantiz Technology"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <div>
+                <span className="font-display text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+                  {siteConfig.name}
+                </span>
+                <p className="text-[11px] font-medium text-brand-600 dark:text-brand-400">
+                  Digital Product & Application Agency
+                </p>
+              </div>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-              {siteConfig.title} based in {siteConfig.location}. Helping businesses build a stronger presence online.
+              {siteConfig.title}. Engineering high-performance web applications, SaaS platforms, and enterprise digital solutions.
             </p>
             <div className="mt-5 flex gap-3">
               <a href={`mailto:${siteConfig.contact.email}`} className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition-colors hover:border-brand-400 hover:text-brand-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-brand-600 dark:hover:text-brand-400">

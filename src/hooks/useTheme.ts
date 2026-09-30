@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 type Theme = 'light' | 'dark';
 
 function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'light';
+  if (typeof window === 'undefined') return 'dark';
 
   const stored = localStorage.getItem('theme');
   if (stored === 'light' || stored === 'dark') return stored;
 
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
-  return 'light';
+  // Default to dark regardless of OS preference
+  return 'dark';
 }
 
 export function useTheme() {

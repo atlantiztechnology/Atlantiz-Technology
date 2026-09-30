@@ -57,14 +57,27 @@ export default function Navbar() {
             e.preventDefault();
             handleNavClick('#home');
           }}
-          className="group flex items-center gap-2"
+          className="group flex items-center gap-3"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-sm font-bold text-white shadow-lg shadow-brand-600/20 transition-transform duration-300 group-hover:scale-105">
-            B
-          </span>
-          <span className="font-display text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-            {siteConfig.name}
-          </span>
+          <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white p-1 shadow-md shadow-brand-600/10 ring-1 ring-gray-200/80 transition-transform duration-300 group-hover:scale-105 dark:bg-gray-900 dark:ring-gray-800">
+            <img
+              src="/logo.png"
+              alt="Atlantiz Technology"
+              className="h-full w-full object-contain"
+              onError={(e) => {
+                // Fallback in case image fails
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-display text-base font-bold tracking-tight text-gray-900 dark:text-white sm:text-lg">
+              {siteConfig.name}
+            </span>
+            <span className="hidden text-[10px] font-medium tracking-wider uppercase text-brand-600 dark:text-brand-400 sm:block">
+              Software & App Agency
+            </span>
+          </div>
         </a>
 
         {/* Desktop nav */}

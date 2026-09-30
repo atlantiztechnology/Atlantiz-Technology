@@ -1,4 +1,4 @@
-import { ExternalLink, ArrowRight, Check } from 'lucide-react';
+import { ExternalLink, ArrowRight, Check, Sparkles, MousePointerClick } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
@@ -12,20 +12,20 @@ export default function Projects() {
       <div className="container-mw container-px">
         {/* Section header */}
         <div ref={ref} className={`reveal ${isVisible ? 'is-visible' : ''} mx-auto max-w-2xl text-center`}>
-          <div className="badge mx-auto">
-            <span className="text-brand-500">◆</span>
-            Concept Projects
+          <div className="badge mx-auto shadow-sm">
+            <Sparkles className="h-3.5 w-3.5 text-brand-500" />
+            Our Work &amp; Concept Projects
           </div>
           <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-            Projects that deliver real business results
+            Custom applications crafted for growing businesses
           </h2>
           <p className="mt-4 text-base text-gray-600 dark:text-gray-400">
-            Each project is built from the ground up — designed, developed, and shipped with a clear focus on the business behind it.
+            Explore a selection of concept and demo apps showcasing our capabilities — from real estate platforms to decor studios and fitness applications.
           </p>
         </div>
 
         {/* Project cards */}
-        <div className="mt-14 flex flex-col gap-8">
+        <div className="mt-14 flex flex-col gap-10">
           {siteConfig.projects.map((project, idx) => (
             <ProjectCard key={project.name} project={project} index={idx} visible={isVisible} />
           ))}
@@ -40,45 +40,68 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
 
   return (
     <div
-      className={`card-surface card-hover reveal reveal-delay-${index % 2 + 1} ${visible ? 'is-visible' : ''} overflow-hidden`}
+      className={`card-surface card-hover reveal reveal-delay-${(index % 3) + 1} ${visible ? 'is-visible' : ''} overflow-hidden border border-gray-200/80 shadow-lg dark:border-gray-800`}
     >
-      <div className={`grid lg:grid-cols-2 ${isReversed ? 'lg:[direction:rtl]' : ''}`}>
-        {/* Mockup */}
-        <div className={`relative overflow-hidden bg-gradient-to-br ${project.color} p-8 sm:p-10 lg:p-12 [direction:ltr]`}>
-          <div className="absolute inset-0 bg-grid opacity-20" />
-          <div className="relative">
-            <ProjectMockup type={project.mockupType} />
-          </div>
+      <div className={`grid items-center lg:grid-cols-12 ${isReversed ? 'lg:[direction:rtl]' : ''}`}>
+        {/* Mockup / Image Side (7 cols on lg) */}
+        <div className={`relative overflow-hidden bg-gradient-to-br ${project.color} p-6 sm:p-8 lg:col-span-7 lg:p-10 [direction:ltr]`}>
+          <div className="absolute inset-0 bg-grid opacity-25" />
+
+          {/* Browser Container — clicking the whole thing opens the demo link */}
+          {project.liveUrl ? (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/browser relative block overflow-hidden rounded-xl border border-white/20 bg-gray-950/90 shadow-2xl shadow-black/40 backdrop-blur-md transition-transform duration-500 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-white/40"
+              title={`View ${project.name} demo`}
+            >
+              <BrowserChrome project={project} />
+            </a>
+          ) : (
+            <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gray-950/90 shadow-2xl shadow-black/40 backdrop-blur-md transition-transform duration-500 hover:scale-[1.02]">
+              <BrowserChrome project={project} />
+            </div>
+          )}
         </div>
 
-        {/* Content */}
-        <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10 [direction:ltr]">
-          <span className="text-xs font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
-            {project.category}
-          </span>
-          <h3 className="mt-2 font-display text-2xl font-bold text-gray-900 dark:text-white">
+        {/* Content Side (5 cols on lg) */}
+        <div className="flex flex-col justify-center p-6 sm:p-8 lg:col-span-5 lg:p-10 [direction:ltr]">
+          <div className="flex items-center gap-2">
+            <span className="rounded-md bg-brand-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-600 dark:bg-brand-950/50 dark:text-brand-400">
+              {project.category}
+            </span>
+          </div>
+
+          <h3 className="mt-3 font-display text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">
             {project.name}
           </h3>
-          <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+
+          <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
             {project.description}
           </p>
 
-          {/* Features */}
-          <ul className="mt-5 grid gap-2 sm:grid-cols-2">
-            {project.features.map((feature) => (
-              <li key={feature} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-500" />
-                {feature}
-              </li>
-            ))}
-          </ul>
+          {/* Key Capabilities */}
+          <div className="mt-5 space-y-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+              Key Capabilities:
+            </span>
+            <ul className="grid gap-2">
+              {project.features.map((feature) => (
+                <li key={feature} className="flex items-start gap-2.5 text-xs text-gray-600 dark:text-gray-300">
+                  <Check className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-brand-500" />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          {/* Tech */}
-          <div className="mt-5 flex flex-wrap gap-1.5">
+          {/* Tech Stack */}
+          <div className="mt-6 flex flex-wrap gap-1.5">
             {project.tech.map((t) => (
               <span
                 key={t}
-                className="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                className="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-200/50 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700/50"
               >
                 {t}
               </span>
@@ -86,15 +109,25 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
           </div>
 
           {/* Buttons */}
-          <div className="mt-6 flex flex-wrap gap-3">
-            <button className="btn-primary group">
-              Live Demo
-              <ExternalLink className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </button>
-            <button className="btn-secondary group">
-              View Details
+          <div className="mt-7 flex flex-wrap gap-3">
+            {project.liveUrl ? (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary group text-xs sm:text-sm"
+              >
+                View Demo
+                <ExternalLink className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            ) : null}
+            <a
+              href="#contact"
+              className={project.liveUrl ? 'btn-secondary group text-xs sm:text-sm' : 'btn-primary group text-xs sm:text-sm'}
+            >
+              Build Similar App
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -102,184 +135,46 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
   );
 }
 
-function ProjectMockup({ type }: { type: string }) {
-  const base = "rounded-xl border border-white/30 bg-white shadow-2xl shadow-black/20 overflow-hidden dark:bg-gray-900";
-
+/** Shared browser chrome + screenshot used inside both the clickable <a> and plain <div> wrappers */
+function BrowserChrome({ project }: { project: Project }) {
   return (
-    <div className={base}>
-      {/* Browser bar */}
-      <div className="flex items-center gap-1.5 border-b border-gray-200/80 px-3 py-2.5 dark:border-gray-800">
-        <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-        <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-        <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-        <div className="ml-2 flex-1">
-          <div className="h-3.5 rounded bg-gray-100 dark:bg-gray-800" />
+    <>
+      {/* Browser top bar */}
+      <div className="flex items-center justify-between border-b border-white/10 bg-gray-900/80 px-3.5 py-2.5">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-400/90" />
+          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/90" />
+          <span className="h-2.5 w-2.5 rounded-full bg-green-400/90" />
         </div>
-      </div>
-
-      {/* Content per type */}
-      <div className="p-4">
-        {type === 'restaurant' && <RestaurantMockup />}
-        {type === 'fitness' && <FitnessMockup />}
-        {type === 'saas-landing' && <SaasLandingMockup />}
-      </div>
-    </div>
-  );
-}
-
-function RestaurantMockup() {
-  return (
-    <div className="space-y-3">
-      {/* Hero with restaurant name */}
-      <div className="rounded-xl bg-gradient-to-br from-accent-500 to-accent-700 p-5">
-        <div className="h-2.5 w-28 rounded bg-white/80" />
-        <div className="mt-2 h-2 w-20 rounded bg-white/50" />
-        <div className="mt-3 flex items-center gap-2">
-          <div className="inline-flex h-6 w-20 items-center justify-center rounded-md bg-white text-[9px] font-bold text-accent-700">
-            Reserve a Table
-          </div>
-          <div className="inline-flex h-6 w-16 items-center justify-center rounded-md bg-green-500 text-[9px] font-bold text-white">
-            WhatsApp
-          </div>
+        <div className="flex items-center gap-1.5 rounded-md bg-gray-800/80 px-3 py-0.5 text-[10px] text-gray-300">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>{project.name.toLowerCase().replace(/\s+/g, '')}.app</span>
         </div>
+        <span className="inline-flex items-center gap-1 rounded-full bg-brand-500/20 px-2 py-0.5 text-[9px] font-bold text-brand-300 ring-1 ring-inset ring-brand-500/30">
+          {project.badge}
+        </span>
       </div>
 
-      {/* Menu items */}
-      <div className="space-y-2">
-        {[
-          { name: 'Margherita Pizza', price: '₹320', w: 'w-24' },
-          { name: 'Pasta Carbonara', price: '₹280', w: 'w-20' },
-          { name: 'Caesar Salad', price: '₹220', w: 'w-16' },
-        ].map((item) => (
-          <div key={item.name} className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-3 py-2.5 dark:border-gray-800 dark:bg-gray-800/50">
-            <div className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-md bg-gradient-to-br from-accent-300 to-accent-400 dark:from-accent-700 dark:to-accent-800" />
-              <div>
-                <div className="h-1.5 w-20 rounded bg-gray-300 dark:bg-gray-600" />
-                <div className="mt-1 h-1.5 w-12 rounded bg-gray-200 dark:bg-gray-700" />
-              </div>
+      {/* Screenshot with click-to-open overlay */}
+      <div className="group/img relative aspect-[16/10] w-full overflow-hidden bg-gray-950">
+        <img
+          src={project.image}
+          alt={project.name}
+          className="h-full w-full object-cover object-top transition-transform duration-700 group-hover/browser:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-transparent to-transparent opacity-60" />
+
+        {/* Hover overlay — only shows when the card is a link */}
+        {project.liveUrl && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gray-950/0 opacity-0 transition-all duration-300 group-hover/browser:bg-gray-950/50 group-hover/browser:opacity-100">
+            <div className="flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-xs font-bold text-gray-900 shadow-lg">
+              <MousePointerClick className="h-4 w-4 text-brand-600" />
+              Click to View Demo
             </div>
-            <div className="text-[10px] font-bold text-accent-600 dark:text-accent-400">{item.price}</div>
           </div>
-        ))}
+        )}
       </div>
-
-      {/* Location bar */}
-      <div className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 dark:border-gray-800 dark:bg-gray-800/50">
-        <div className="h-3 w-3 rounded-full bg-accent-500" />
-        <div className="h-1.5 flex-1 rounded bg-gray-200 dark:bg-gray-700" />
-        <div className="h-5 w-14 rounded-md bg-accent-500" />
-      </div>
-    </div>
-  );
-}
-
-function FitnessMockup() {
-  return (
-    <div className="space-y-3">
-      {/* Hero */}
-      <div className="rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 p-5">
-        <div className="h-3 w-32 rounded bg-white/80" />
-        <div className="mt-2 h-2 w-24 rounded bg-white/50" />
-        <div className="mt-3 inline-flex h-6 w-24 items-center justify-center rounded-md bg-white text-[9px] font-bold text-brand-700">
-          Join Now
-        </div>
-      </div>
-
-      {/* Program cards */}
-      <div className="grid grid-cols-2 gap-2">
-        {[
-          { label: 'Strength', color: 'from-brand-400 to-brand-500' },
-          { label: 'Cardio', color: 'from-accent-400 to-accent-500' },
-        ].map((prog) => (
-          <div key={prog.label} className="rounded-lg border border-gray-100 p-3 dark:border-gray-800">
-            <div className={`mb-2 h-12 rounded-md bg-gradient-to-br ${prog.color}`} />
-            <div className="h-1.5 w-16 rounded bg-gray-300 dark:bg-gray-600" />
-            <div className="mt-1 h-1.5 w-10 rounded bg-gray-200 dark:bg-gray-700" />
-          </div>
-        ))}
-      </div>
-
-      {/* Membership plans */}
-      <div className="grid grid-cols-3 gap-2">
-        {['Basic', 'Pro', 'Elite'].map((plan, i) => (
-          <div key={plan} className={`rounded-lg border p-2.5 text-center ${i === 1 ? 'border-brand-500 bg-brand-50 dark:border-brand-500 dark:bg-brand-950/30' : 'border-gray-100 dark:border-gray-800'}`}>
-            <div className="text-[10px] font-bold text-gray-700 dark:text-gray-300">{plan}</div>
-            <div className="mt-1.5 h-2 w-12 mx-auto rounded bg-gray-200 dark:bg-gray-700" />
-            <div className="mt-2 h-4 w-16 mx-auto rounded-md bg-brand-500" />
-          </div>
-        ))}
-      </div>
-
-      {/* Schedule bar */}
-      <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-3 py-2.5 dark:border-gray-800 dark:bg-gray-800/50">
-        <div className="h-2 w-16 rounded bg-gray-200 dark:bg-gray-700" />
-        <div className="h-5 w-18 rounded-md bg-brand-500" />
-      </div>
-    </div>
-  );
-}
-
-function SaasLandingMockup() {
-  return (
-    <div className="space-y-3">
-      {/* Hero with CTA */}
-      <div className="rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 p-5">
-        <div className="h-3 w-32 rounded bg-white/80" />
-        <div className="mt-2 h-2 w-24 rounded bg-white/50" />
-        <div className="mt-3 flex items-center gap-2">
-          <div className="inline-flex h-6 w-24 items-center justify-center rounded-md bg-white text-[9px] font-bold text-brand-600">
-            Start Free Trial
-          </div>
-          <div className="inline-flex h-6 w-16 items-center justify-center rounded-md bg-white/30 text-[9px] font-medium text-white">
-            Book Demo
-          </div>
-        </div>
-      </div>
-
-      {/* Dashboard preview */}
-      <div className="rounded-lg border border-gray-100 bg-gray-50 p-3 dark:border-gray-800 dark:bg-gray-800/50">
-        <div className="mb-2 flex gap-2">
-          {['Overview', 'Tasks', 'Team'].map((tab, i) => (
-            <div key={tab} className={`rounded-md px-2 py-1 text-[9px] font-medium ${i === 0 ? 'bg-brand-500 text-white' : 'bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400'}`}>
-              {tab}
-            </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-3 gap-2">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="rounded-md border border-gray-100 bg-white p-2 dark:border-gray-800 dark:bg-gray-900">
-              <div className="h-1.5 w-10 rounded bg-gray-200 dark:bg-gray-700" />
-              <div className="mt-1.5 h-2 w-8 rounded bg-brand-400" />
-            </div>
-          ))}
-        </div>
-        <div className="mt-2 flex h-12 items-end gap-1 rounded-md border border-gray-100 bg-white p-2 dark:border-gray-800 dark:bg-gray-900">
-          {[50, 70, 45, 85, 60, 90, 55].map((h, i) => (
-            <div key={i} className="flex-1 rounded-t bg-gradient-to-t from-brand-500 to-brand-400" style={{ height: `${h}%` }} />
-          ))}
-        </div>
-      </div>
-
-      {/* Pricing toggle */}
-      <div className="flex items-center justify-center gap-2">
-        <div className="h-1.5 w-10 rounded bg-gray-300 dark:bg-gray-600" />
-        <div className="flex h-5 w-10 items-center rounded-full bg-brand-500 px-0.5">
-          <div className="ml-auto h-4 w-4 rounded-full bg-white" />
-        </div>
-        <div className="h-1.5 w-10 rounded bg-gray-300 dark:bg-gray-600" />
-      </div>
-
-      {/* Pricing cards */}
-      <div className="grid grid-cols-3 gap-2">
-        {['Free', 'Pro', 'Team'].map((plan, i) => (
-          <div key={plan} className={`rounded-lg border p-2.5 text-center ${i === 1 ? 'border-brand-500 bg-brand-50 dark:border-brand-500 dark:bg-brand-950/30' : 'border-gray-100 dark:border-gray-800'}`}>
-            <div className="text-[10px] font-bold text-gray-700 dark:text-gray-300">{plan}</div>
-            <div className="mt-1.5 h-2 w-12 mx-auto rounded bg-gray-200 dark:bg-gray-700" />
-            <div className="mt-2 h-4 w-14 mx-auto rounded-md bg-brand-500" />
-          </div>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }

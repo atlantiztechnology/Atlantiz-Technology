@@ -27,15 +27,15 @@ export default function Services() {
       <div className="container-mw container-px">
         {/* Section header */}
         <div ref={ref} className={`reveal ${isVisible ? 'is-visible' : ''} mx-auto max-w-2xl text-center`}>
-          <div className="badge mx-auto">
+          <div className="badge mx-auto shadow-sm">
             <span className="text-brand-500">◆</span>
-            What I Can Build
+            Our Agency Services
           </div>
           <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-            Services built around your business goals
+            Custom development built for client success
           </h2>
           <p className="mt-4 text-base text-gray-600 dark:text-gray-400">
-            From a single landing page to a full web application, every project is designed and developed with your business in mind.
+            From high-conversion web platforms to full-scale SaaS web applications, we design and engineer solutions tailored to your growth goals.
           </p>
         </div>
 

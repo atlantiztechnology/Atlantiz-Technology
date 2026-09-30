@@ -74,18 +74,23 @@ export default function Contact() {
       return;
     }
 
-    const { error } = await supabase.from('contact_submissions').insert({
-      name,
-      email,
-      project_type: projectType || null,
-      budget: budget || null,
-      message,
-    });
+    if (supabase) {
+      const { error } = await supabase.from('contact_submissions').insert({
+        name,
+        email,
+        project_type: projectType || null,
+        budget: budget || null,
+        message,
+      });
 
-    if (error) {
-      setStatus('error');
-      setErrorMsg('Something went wrong. Please try again or email me directly.');
-      return;
+      if (error) {
+        setStatus('error');
+        setErrorMsg('Something went wrong. Please try again or email us directly.');
+        return;
+      }
+    } else {
+      // Supabase is not configured yet in local/preview environment: simulate smooth response
+      await new Promise((resolve) => setTimeout(resolve, 600));
     }
 
     setStatus('success');
@@ -97,15 +102,15 @@ export default function Contact() {
       <div className="container-mw container-px">
         {/* Header */}
         <div ref={ref} className={`reveal ${isVisible ? 'is-visible' : ''} mx-auto max-w-2xl text-center`}>
-          <div className="badge mx-auto">
+          <div className="badge mx-auto shadow-sm">
             <span className="text-brand-500">◆</span>
-            Get in Touch
+            Start a Consultation
           </div>
           <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-            Let us build something great together
+            Let us build your next application together
           </h2>
           <p className="mt-4 text-base text-gray-600 dark:text-gray-400">
-            Tell me about your project and I will get back to you within 24 hours. No obligation, no pressure.
+            Tell us about your project vision, timeline, and requirements. Our engineering team will get back to you within 24 hours with actionable next steps.
           </p>
         </div>
 
@@ -119,16 +124,16 @@ export default function Contact() {
                     <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
                   </div>
                   <h3 className="font-display text-xl font-bold text-gray-900 dark:text-white">
-                    Message sent!
+                    Message received!
                   </h3>
                   <p className="mt-2 max-w-sm text-sm text-gray-600 dark:text-gray-400">
-                    Thank you for reaching out. I will get back to you within 24 hours.
+                    Thank you for reaching out. Our team will review your requirements and respond within 24 hours.
                   </p>
                   <button
                     onClick={() => setStatus('idle')}
                     className="btn-secondary mt-6"
                   >
-                    Send another message
+                    Send another inquiry
                   </button>
                 </div>
               ) : (
@@ -136,27 +141,27 @@ export default function Contact() {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Name <span className="text-brand-500">*</span>
+                        Full Name / Company <span className="text-brand-500">*</span>
                       </label>
                       <input
                         id="name"
                         name="name"
                         type="text"
                         required
-                        placeholder="Your name"
+                        placeholder="Your name or company"
                         className="input-field"
                       />
                     </div>
                     <div>
                       <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Email <span className="text-brand-500">*</span>
+                        Work Email <span className="text-brand-500">*</span>
                       </label>
                       <input
                         id="email"
                         name="email"
                         type="email"
                         required
-                        placeholder="you@example.com"
+                        placeholder="you@company.com"
                         className="input-field"
                       />
                     </div>
@@ -165,10 +170,10 @@ export default function Contact() {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="projectType" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Project Type
+                        Project Scope / Category
                       </label>
                       <select id="projectType" name="projectType" className="input-field">
-                        <option value="">Select a type</option>
+                        <option value="">Select scope</option>
                         {projectTypes.map((t) => (
                           <option key={t} value={t}>{t}</option>
                         ))}
@@ -176,7 +181,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <label htmlFor="budget" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Budget
+                        Budget Range
                       </label>
                       <select id="budget" name="budget" className="input-field">
                         <option value="">Select a range</option>
@@ -189,14 +194,14 @@ export default function Contact() {
 
                   <div>
                     <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Message <span className="text-brand-500">*</span>
+                      Project Details & Goals <span className="text-brand-500">*</span>
                     </label>
                     <textarea
                       id="message"
                       name="message"
                       required
                       rows={5}
-                      placeholder="Tell me about your project, goals, and timeline..."
+                      placeholder="Describe your application requirements, desired features, goals, and target launch timeline..."
                       className="input-field resize-none"
                     />
                   </div>
