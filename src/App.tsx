@@ -7,8 +7,12 @@ import Process from '@/components/Process';
 import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import CookieBanner from '@/components/CookieBanner';
+import { useVisitorTracking } from '@/hooks/useVisitorTracking';
 
 function App() {
+  const { showBanner, onAccept, onDecline } = useVisitorTracking();
+
   return (
     <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
       <Navbar />
@@ -22,6 +26,11 @@ function App() {
         <Contact />
       </main>
       <Footer />
+
+      {/* Cookie / Analytics consent banner */}
+      {showBanner && (
+        <CookieBanner onAccept={onAccept} onDecline={onDecline} />
+      )}
     </div>
   );
 }
